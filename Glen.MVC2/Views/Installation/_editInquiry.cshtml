@@ -1,0 +1,98 @@
+﻿@model Installation
+
+
+<div class="form-group">
+    <div class="col-xs-4 control-label">Inquiry date</div>
+    <div class="col-xs-8">
+
+        <input class="form-control date" name="InquiryDate" @ViewBag.readOnly
+               data-bv-date-format="yyyy-MM-dd"
+               value="@(Model.InquiryDate?.ToString("yyyy-MM-dd") ?? "")"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-xs-4 control-label">Curtain type</div>
+    <div class="col-xs-8">
+        @Html.Partial("_selectBlindType", Model  )
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Size</div>
+    <div class="col-xs-8">
+
+        <div class="input-group form-inline size">
+            <input class="form-control" name="Width" placeholder="Width" value="@Model.Width" @ViewBag.readOnly
+                   data-bv-greaterthan
+                   data-bv-greaterthan-value="0"
+                   data-bv-greaterthan-inclusive="true"
+                   data-bv-greaterthan-message="Has to be more then 0"/>
+            <input class="form-control" name="Height" placeholder="Height" value="@Model.Height" @ViewBag.readOnly
+                   data-bv-greaterthan
+                   data-bv-greaterthan-value="0"
+                   data-bv-greaterthan-inclusive="true"
+                   data-bv-greaterthan-message="Has to be more then 0"/>
+        </div>
+
+
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Measure instructions</div>
+    <div class="col-xs-8">
+        <textarea class="form-control" name="MeasureInstructions" @ViewBag.readOnly>@Model.MeasureInstructions</textarea>
+
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Material</div>
+    <div class="col-xs-8">
+        <input class="form-control" name="Material" value="@Model.Material" @ViewBag.readOnly/>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Side</div>
+    <div class="col-xs-8">
+
+        @foreach (var side in Enum.GetValues(typeof (Installation.SideEnum)))
+        {
+            <div class="radio">
+                <label>
+                    <input type="radio" name="Side" @( Model.Side.ToString() == side.ToString() ? "checked" : "")
+                           value="@side" /> @side
+                </label>
+            </div>
+        }
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Special instructions</div>
+    <div class="col-xs-8">
+        <textarea class="form-control" name="SpecialInstructions" @ViewBag.readOnly>@Model.SpecialInstructions</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-4 control-label">Price</div>
+    <div class="col-xs-8">
+        <div class="input-group inputGroupContainer">
+            <input class="form-control" name="Price" placeholder="Price" value="@Model.Price" @ViewBag.readOnly
+                   data-bv-greaterthan
+                   data-bv-greaterthan-value="0"
+                   data-bv-greaterthan-inclusive="true"
+                   data-bv-greaterthan-message="Has to be more then 0"/>
+            <span class="input-group-addon">€</span>
+        </div>
+    </div>
+</div>
+
+
+<style type="text/css">
+    .size input { width: 48% !important; }
+
+    #mainForm .inputGroupContainer .form-control-feedback {
+        right: 30px;
+        top: 0;
+        z-index: 55;
+    }
+</style>
+

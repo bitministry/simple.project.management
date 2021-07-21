@@ -1,0 +1,9 @@
+﻿@model Installation
+
+<select class="form-control" name="BlindType" @ViewBag.readOnly>
+    <option></option>
+    @foreach (var type in Enum.GetValues(typeof(Installation.BlindTypeEnum)).Cast<Installation.BlindTypeEnum>())
+    {
+        <option value="@type" @Html.Raw(type == Model.BlindType ? "selected" : "")>@type</option>
+    }
+</select>

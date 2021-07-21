@@ -1,0 +1,58 @@
+﻿@model Customer
+@{
+    var balance = Model.Payments.Sum(x => x.Amount) - Model.Installations.Sum(x => x.Price) ;
+    }
+<div class="panel panel-default payments">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Payments
+            <strong>Total @Model.Payments.Sum( x=> x.Amount).ToString("C")</strong>
+
+            @if (balance != 0)
+            {
+                <span class="pull-right text-danger">
+                    Balance @balance
+                </span>
+            }
+            else
+            {
+                <span class="pull-right text-success">
+                    <i class="fa fa-check fa-2x"></i>
+                </span>
+            }
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-lg-9 col-md-8 col-sm-7 col-xs-12">
+            @foreach (var payment in Model.Payments ?? new List<Payment>())
+            {
+                <span class="well well-sm ">
+                    <strong>@payment.Amount.ToString("C") </strong>
+                    <span class="text-muted small">
+                        (@payment.XWhen.ToString("dd-MM-yyyy"))
+                    </span>
+                    <a href="@Url.Action("RemovePayment", new { payment.Id })">
+                        <i class="fa fa-remove text-danger xs"></i> 
+                    </a>
+                </span>
+            }
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+            @using (Html.BeginForm("AddPayment", "Customer", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.HiddenFor( x=> x.Id)
+                <div class="input-group">
+                    <input class="form-control input-sm" placeholder="100.00" name="Amount" required="required" min="1" value="@Math.Max( 0, -1* balance.Value )"/>
+                    <span class="input-group-addon">£</span>
+                    <input class="form-control input-sm date" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="XWhen" required="required" />
+                    <span class="input-group-btn ">
+                        <button class="btn btn-success btn-sm" type="submit">
+                            <i class="fa fa-plus"></i>
+                            </button>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

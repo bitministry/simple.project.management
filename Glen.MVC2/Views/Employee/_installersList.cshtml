@@ -1,0 +1,45 @@
+﻿
+@model IList<Glen.MVC.Models.ProjectInstallerViewModel>
+@{
+    Layout = null;
+}
+<style>
+    #installer-list {
+        list-style-type: none;
+    }
+    #installer-list li {
+        display: inline-block;
+    }
+    #installer-list input[type=checkbox]:not(:checked) + i:before {
+        content: "\f096"; 
+    }
+    #installer-list i.fa {
+        width: 20px;
+    }
+
+    #installer-list input[type=checkbox]:checked + i:before {
+        content: "\f00c"; 
+    }
+</style>
+
+<form method="POST" action="@Url.Action("AssignInstallers", "Project")" id="assignInstallersForm">
+    
+    <input type="hidden" name="projectId" value="@Request["projectId"]"/>
+
+    <ul id="installer-list" class="btn-group" data-toggle="buttons">
+
+        @foreach (var installer in Model)
+        {
+            <li>
+                <label class="btn btn-lg btn-default @Html.Raw( @installer.IsAssigned ? "active" : "" )">
+                    <input type="checkbox" name="assignedInstallerId" class="hidden"
+                           value="@installer.Employee.Id"
+                           @Html.Raw(@installer.IsAssigned ? "checked" : "")>
+
+                    <i class="fa"></i>
+                    @installer.Employee.Name
+                </label>
+            </li>
+        }
+    </ul>
+</form>

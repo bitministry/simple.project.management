@@ -1,0 +1,24 @@
+﻿@model Customer 
+<div class="panel panel-default ">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Customer
+        </h3>
+    </div>
+    <div class="panel-body panel-tight">
+        <div class="well well-sm col-sm-12">
+            <a href="@Url.Action("Edit", "Customer", new { id = @Model.Id })">@Model.Name</a>
+        </div>
+
+        <div class="well well-sm col-sm-8" style="word-wrap: break-word;">
+            <a href="mailto:@Model.Email" style="color:black; font-size:11px;">@Model.Email</a>
+        </div>
+        @if (!String.IsNullOrEmpty(Model.Phone))
+        {
+            <div class="well well-sm col-sm-4">
+                @Model.Phone
+            </div>
+        }
+
+    </div>
+</div>

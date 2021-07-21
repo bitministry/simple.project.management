@@ -1,0 +1,31 @@
+﻿@using System.Configuration
+@model Address 
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Address
+            <span class="pull-right">@( Model.postal_town ?? Model.locality )</span>
+        </h3>
+    </div>
+    <div class="panel-body panel-tight">
+        <div class="form-group">
+            <div class="col-md-12 ">
+                <input class="form-control" id="Address" name="Address.Line" value="@Model.Line" @ViewBag.readOnly
+                       data-bv-notempty="true"
+                       data-bv-notempty-message="The address is required and cannot be empty"/>
+
+            </div>
+        </div>
+        <div class="address">
+            <input type=hidden name="Address.Id" value="@Model.Id" />
+            <input type=hidden name="Address.formatted_address" value="@Model.formatted_address"/>
+            <input type=hidden name="Address.locality" value="@Model.locality" />
+            <input type=hidden name="Address.postal_town" value="@Model.postal_town" />
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/app/address.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@( ConfigurationManager.AppSettings["googleKey"] )&libraries=places&callback=initAutocomplete" async defer></script>

@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Layouts/_default.cshtml"; 
+}
+
+<div class="row clearfix">
+    <div class="col-md-12">
+        @RenderBody()
+    </div>
+</div>
+@RenderSection("scripts", required: false)
+@RenderSection("css", required: false)

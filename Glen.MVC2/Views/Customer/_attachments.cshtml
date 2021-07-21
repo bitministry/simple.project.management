@@ -1,0 +1,49 @@
+﻿@model Customer  
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Attachments
+        </h3>
+        <span class="btn btn-default btn-file pull-right">
+            Browse and add <input type="file" name="attachments" multiple>
+        </span>
+    </div>
+    <div class="panel-body">
+        <div class="col-sm-9" id="attachmentsList">
+            @if (@Model.Attachments != null)
+            {
+                foreach ( var attachment in @Model.Attachments.Where( x=> x != null ) )
+                {
+                    <blockquote>
+                        <a href="@Url.Action("Retrive", "Attachment", new { id = attachment.Id })">@attachment.FileName</a>
+                        <a class="btn btn-default btn-xs pull-right"
+                           href="@Url.Action("Delete", "Attachment",
+                                     new {attachment.Id, customerId = Model.Id })">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </blockquote>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+<script language="javascript">
+
+    $(document).on('change', '.btn-file :file', function () {
+        var input = $(this);
+        var files = input.prop("files");
+        var names = $.map(files, function (val) { return val.name; });
+        $("#newAttachmentTemplate").tmpl(names).appendTo("#attachmentsList");
+    });
+</script>
+<script id="newAttachmentTemplate" type="template">
+    <blockquote>
+        ${$data}
+        <span class="label label-warning">Not saved</span>
+    </blockquote>
+</script>
+

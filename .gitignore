@@ -1,0 +1,7 @@
+Glen.Web/
+Glen.NHiber/
+GlenHtml/
+packages/
+**/bin/
+**/obj/
+Glen.MVC/attachments/

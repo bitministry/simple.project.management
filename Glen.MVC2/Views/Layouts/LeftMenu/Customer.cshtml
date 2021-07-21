@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Layouts/_default.cshtml";
+    ViewBag.action = Request.RequestContext.RouteData.Values["Action"];
+}
+<div class="row clearfix">
+    <div class="col-md-2">
+        <h4>
+            Customers
+        </h4>
+        <div class="list-group">
+
+            @if (LoginRole.Is(PositionEnum.Sales))
+            {
+
+                <a href="@Url.Action("Index", "Customer")" class="list-group-item  @Html.Raw(ViewBag.action == "Index" ? "active" : "")">
+                    <span class="glyphicon glyphicon-list margin-right-5"></span>
+                    List
+                </a>
+                <a href="@Url.Action("Edit", "Customer", new {Id = 0})" class="list-group-item  @Html.Raw(ViewBag.action == "Edit" ? "active" : "")">
+                    <span class="glyphicon glyphicon-plus margin-right-5"></span>
+                    New customer
+                </a>
+            }
+
+        </div>
+
+
+        <p class="text-info" style="padding: 5px;">
+            Manage your customers.
+        </p>
+        <p class="text-info" style="padding: 5px;">
+            Create project for a customer.
+        </p>
+
+
+
+    </div>
+    <div class="col-md-10">
+        @RenderBody()
+    </div>
+</div>
+
+@RenderSection("scripts", required: false)
+@RenderSection("css", required: false)

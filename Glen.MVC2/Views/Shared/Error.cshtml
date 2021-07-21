@@ -1,0 +1,14 @@
+﻿@model HandleErrorInfo
+@{
+    Layout = "~/Views/Layouts/_default.cshtml";
+    if (ViewBag.ErrorTitle == null)
+    {
+        ViewBag.ErrorTitle = "Error";
+    }
+}
+
+<h1>
+    @ViewBag.ErrorTitle   
+</h1>
+
+@Html.Partial("Exception", Model.Exception)

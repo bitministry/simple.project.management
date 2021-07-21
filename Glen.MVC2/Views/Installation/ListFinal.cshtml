@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Installation>
+
+@{
+    Layout = "~/Views/Layouts/LeftMenu/Empty.cshtml";
+}
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            @ViewContext.RouteData.Values["id"]
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Customer
+                    </th>
+                    <th>
+                        Blind Type
+                    </th>
+                    <th>
+                        Material
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        InStock
+                    </th>
+                    <th>
+                        Deadline
+                    </th>
+                    <th>
+                        Installed
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model)
+                {
+                    <tr class="@(project.Status < Installation.StatusEnum.Installed && project.Deadline < DateTime.Now ? "danger" : "" )">
+
+                        <td>
+                            <a href="@Url.Action("Edit", "Installation", new { Id= project.Id } )">@project.Title</a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Customer", new {project.Customer.Id})" style="color: black;">
+                                @project.Customer.Name (@(project.Customer.Address?.City()))
+                            </a>
+                        </td>
+                        <td>@project.BlindType</td>
+                        <td>@project.Material</td>
+                        <td nowrap="">@(project.Price.HasValue ? project.Price.Value.ToString("C") : "")</td>
+                        <td>@($"{project.InStockDate:yyyy-MM-dd}")</td>
+                        <td>@($"{project.Deadline:yyyy-MM-dd}")</td>
+                        <td>@($"{project.InstalledDate:yyyy-MM-dd}")</td>
+                        <td>
+                            @if ( project.Status < Installation.StatusEnum.Archived)
+                            {
+                                <a href="@Url.Action("ForwardToNextStatus", "Installation", new {project.Id})" class="btn btn-success btn-xs">
+                                    <i class="fa fa-forward"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

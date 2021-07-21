@@ -1,0 +1,150 @@
+﻿@using Glen.MVC.Models
+@model Employee
+@{
+    Layout = "~/Views/Layouts/LeftMenu/"+ Model.GetType().Name +".cshtml";
+}
+
+@if (ViewBag.Exception != null)
+{
+    @Html.Partial("Exception", (Exception)ViewBag.Exception)
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            @(Model.Name ?? "Create new employee")
+        </h3>
+    </div>
+    <div class="panel-body">
+
+        <form id="mainForm" method="post" class="form-horizontal"
+              data-bv-message="This value is not valid"
+              data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+              data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+              data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+            <input type="text" style="display: none">
+            <input type="password" style="display:none">
+            <input type="hidden" name="Phone2"/>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Email</label>
+                    <span class="col-sm-8 ">
+                        <input class="form-control" name="email" type="email" placeholder="Email address" value="@Model.Email"
+                               data-bv-notempty="true"
+                               data-bv-emailaddress="true" />
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Name</label>
+                    <span class="col-sm-8 ">
+                        <input class="form-control" name="Name" placeholder="Full name" value="@Model.Name"
+                               data-bv-notempty="true" />
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Password</label>
+                    <span class="col-sm-8 ">
+                        <input class="form-control" name="password" placeholder="Password" type="password" value="@Model.Password"
+                               data-bv-notempty="true"
+                               pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                               data-bv-regexp-message="At least 8 characters, including a lowercase and uppercase character and 1 number" />
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Psw confirmation</label>
+                    <span class="col-sm-8 ">
+                        <input class="form-control" name="confirmPassword" placeholder="Password confirmation" type="password" value="@Model.Password" />
+                        <i style="cursor: pointer;" class="fa fa-question" onclick="$('input[name=confirmPassword]').attr('type', 'text')"> show password</i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Phone</label>
+                    <span class="col-sm-8 ">
+                        <input class="form-control" name="phone" placeholder="Phone" value="@Model.Phone"
+                               pattern="[0-9 +\-]{6,20}$"
+                               data-bv-regexp-message="Phone number has to be numeric, and at least 6 characters" />
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">Position</label>
+                    <div class="col-xs-8">
+                        @if ((Session["LogIn"] as Employee).Position == PositionEnum.Boss)
+                        {
+                            foreach (var position in Enum.GetValues(typeof(PositionEnum)))
+                            {
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="Position" @( Model.Position.ToString() == position.ToString() ? "checked" : "")
+                                               value="@position" data-bv-notempty="true" /> @position
+                                        </label>
+                                    </div>
+                            }
+                        }
+                        else
+                        {
+                            <input class="form-control" name="Position" readonly="true" value="@Model.Position" />
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                @Html.Partial("~/Views/Contact/_address.cshtml", Model.Address ?? new Address())
+            </div>
+
+
+            <div class="col-md-12 ">
+                <div style="text-align: center;">
+                    <button class="btn btn-primary " type="submit">
+                        <span class="glyphicon glyphicon-ok margin-right-5"></span> Save
+                    </button>
+
+                </div>
+            </div>
+
+
+        </form>
+
+
+
+
+
+    </div>
+</div>
+
+@section scripts { 
+<script>
+    $(document).ready(function () {
+
+        $('select[name="Address.CityId"]')
+            .multiselect();
+
+        $('#mainForm').bootstrapValidator({
+            fields: {
+                password: {
+                    validators: {
+                        identical: {
+                            field: 'confirmPassword',
+                            message: 'The password and its confirm are not the same'
+                        }
+                    }
+                },
+                confirmPassword: {
+                    validators: {
+                        identical: {
+                            field: 'password',
+                            message: 'The password and its confirm are not the same'
+                        }
+                    }
+                }
+            }
+        });
+
+    });
+</script>
+}

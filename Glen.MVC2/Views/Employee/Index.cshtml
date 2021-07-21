@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Employee>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Layouts/LeftMenu/Employee.cshtml";
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Employees
+        </h3>
+    </div>
+    <div class="panel-body">
+
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Position
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Edit", "Employee", new { Id= employee.Id } )">@employee.Name</a>
+                        </td>
+                        <td>
+                            @employee.Position
+                        </td>
+                        <td>
+                            @employee.Email
+                        </td>
+                        <td>
+                            @employee.Phone
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("button[data-toggle=tooltip]").tooltip();
+        $("span[data-toggle=tooltip]").tooltip();
+
+
+
+    });
+
+
+</script>

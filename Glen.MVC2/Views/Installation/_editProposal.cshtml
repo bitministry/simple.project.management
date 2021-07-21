@@ -1,0 +1,42 @@
+﻿@model Installation
+
+<div class="form-group">
+    <div class="col-xs-4 control-label">Proposal date</div>
+    <div class="col-xs-8">
+        <input class="form-control date" name="ProposalDate" @ViewBag.readOnly
+               value="@(Model.ProposalDate?.ToString("yyyy-MM-dd") ?? "")" />
+    </div>
+</div>
+<div id="projectDates">
+    <div class="form-group">
+        <div class="col-xs-4 control-label">Start</div>
+        <div class="col-xs-8">
+            <input class="form-control date" id="startDate" name="Start" @ViewBag.readOnly
+                   value="@(Model.Start?.ToString("yyyy-MM-dd") ?? "")" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-4 control-label">Deadline</div>
+        <div class="col-xs-8">
+            <input class="form-control date" id="endDate" name="Deadline" @ViewBag.readOnly
+                   value="@(Model.Deadline?.ToString("yyyy-MM-dd") ?? "")" />
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #bookingCalendar {
+        margin-top: 10px;
+    }
+
+    #bookingCalendar a {
+        color: white;
+    }
+
+    .date {
+        z-index: 10;
+        position: relative;
+    }
+</style>
+

@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Views/Layouts/_htmlBody.cshtml"; 
+    
+}
+
+    <div class="container">
+        
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <nav class="navbar navbar-default" role="navigation">
+                    @Html.Partial("TopMenu")
+                </nav>
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>

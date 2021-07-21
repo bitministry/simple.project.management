@@ -1,0 +1,100 @@
+﻿/*.customer-installation-rows{
+    display:flex;
+    flex: 0 1 auto;
+    flex-direction:column;
+    .irow{
+        display:flex;
+        flex: 0 1 auto;
+        flex-direction:row;
+        border:solid 1px red;
+    //    width:100%;
+        div{
+            display:flex;
+            flex: 0 1 auto;
+  //          display:table-cell;
+        }
+    }
+}*/
+.payments .well {
+  white-space: nowrap;
+  line-height: 37px;
+  margin-right: 2px;
+}
+.customer-installation-rows .irow {
+  border-bottom: 1px dotted #d1d1d1;
+}
+.customer-installation-rows .irow:first-child,
+.customer-installation-rows .irow:last-child {
+  font-weight: bold;
+}
+@media (min-width: 991px) {
+  .customer-installation-rows {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .customer-installation-rows .nu-row {
+    border-bottom: none !important;
+  }
+  .customer-installation-rows .irow {
+    padding: 1px;
+    display: table-row;
+    border-bottom: 1px dotted #d1d1d1;
+    width: 100%;
+  }
+  .customer-installation-rows .irow div {
+    display: table-cell;
+    padding: 3px;
+  }
+  .customer-installation-rows .irow div small {
+    display: none;
+  }
+}
+@media (max-width: 991px) {
+  .customer-installation-rows {
+    width: 100%;
+  }
+  .customer-installation-rows .irow:first-child {
+    display: none;
+  }
+  .customer-installation-rows .nu-row {
+    display: flex;
+  }
+  .customer-installation-rows .nu-row div {
+    display: flex;
+  }
+  .customer-installation-rows .nu-row div:nth-child(1) {
+    width: 50%;
+    padding: 0 20px;
+  }
+  .customer-installation-rows .nu-row div:nth-child(2) {
+    width: 30%;
+  }
+  .customer-installation-rows .nu-row div:nth-child(3) {
+    width: 20%;
+  }
+  .customer-installation-rows .irow {
+    padding: 1px;
+    width: 100%;
+  }
+  .customer-installation-rows .irow div {
+    width: 49%;
+    padding: 3px;
+    line-height: 22px;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+  }
+  .customer-installation-rows .irow div.title {
+    width: 100%;
+    font-weight: bold;
+  }
+  .customer-installation-rows .irow div.desc {
+    padding-left: 70px;
+  }
+  .customer-installation-rows .irow div small {
+    position: absolute;
+    left: 0;
+    color: #b8babd;
+  }
+}

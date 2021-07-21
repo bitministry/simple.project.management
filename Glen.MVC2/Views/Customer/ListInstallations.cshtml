@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Installation>
+@{
+    var total = Model.Sum(x => x.Price);
+}
+
+
+
+<form method="post" class="form-horizontal" enctype="multipart/form-data"
+      data-bv-message="This value is not valid"
+      data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh" action="@Url.Action("Create", "Installation")">
+
+    <input type="hidden" name="Customer.Id" value="@ViewContext.RouteData.Values["id"]">
+    <div class="customer-installation-rows">
+
+        <div class="irow">
+
+            <div>
+                Title
+            </div>
+            <div>
+                Type
+            </div>
+            <div>
+                Status
+            </div>
+            <div>
+                Size
+            </div>
+            <div>
+                Material
+            </div>
+            <div>
+                Measure i.
+            </div>
+            <div class="">
+                Price
+            </div>
+
+
+        </div>
+
+        @foreach (var installation in Model)
+            {
+            <div class="@(installation.Status < Installation.StatusEnum.Installed && installation.Deadline < DateTime.Now ? "danger" : "" ) irow">
+                <div class="title">
+                    <a href="@Url.Action("Edit", "Installation", new {installation.Id})">@installation.Title</a>
+                </div>
+                <div class="desc">
+                    @NotEmpty(installation.BlindType.ToString())
+                    <small>type</small>
+                </div>
+                <div>
+                    @switch (installation.Status)
+                    {
+                        case Installation.StatusEnum.Inquiry:
+                            @(installation.InquiryDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                        case Installation.StatusEnum.Proposal:
+                            @(installation.ProposalDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                        case Installation.StatusEnum.Order:
+                            @(installation.OrderDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                        case Installation.StatusEnum.InStock:
+                            @(installation.InStockDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                        case Installation.StatusEnum.Installed:
+                            @(installation.InstalledDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                        case Installation.StatusEnum.Archived:
+                            @(installation.ArchivedDate?.ToString("dd-MM-yyyy") ?? "")
+                            break;
+                    }
+                    @installation.Status.ToString()
+                    @if (installation.Status >= Installation.StatusEnum.Order && installation.Status < Installation.StatusEnum.Archived)
+                    {
+                        <a href="@Url.Action("ForwardToNextStatus", "Installation", new {installation.Id})" class="btn btn-success btn-xs">
+                            <i class="fa fa-forward"></i>
+                        </a>
+                    }
+
+                </div>
+                <div class="desc">
+                    @NotEmpty(installation.Size())
+                    <small>size</small>
+                </div>
+                <div class="desc">
+                    @NotEmpty(installation.Material)
+                    <small>material</small>
+                </div>
+                <div class="desc">
+                    @NotEmpty(installation.MeasureInstructions)
+                    <small>measure i</small>
+                </div>
+                <div>
+                    @NotEmpty(installation.Price.HasValue ? installation.Price.Value.ToString("C") : "" )
+                </div>
+
+            </div>
+        }
+        <div class="irow nu-row">
+            <div class="form-group">
+                <input class="form-control" name="Title" placeholder="Title" id="newInstallationTitle"
+                       data-bv-stringlength-message="Has to be longer then 1 letter"
+                       data-bv-stringlength-min="2"
+                       data-bv-notempty="true"
+                       data-bv-notempty-message="The title is required and cannot be empty" />
+            </div>
+            <div>
+                @Html.Partial("~/Views/Installation/_selectBlindType.cshtml", new Installation())
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">
+                    <span class="fa fa-plus"></span> add
+                </button>
+            </div>
+        </div>
+        <div class="irow">
+            <div>
+                Total
+            </div>
+            <div>
+                @(total.HasValue ? total.Value.ToString("C") : "" )
+            </div>
+        </div>
+    </div>
+
+
+
+
+</form>
+
+@functions{
+
+    private HtmlString NotEmpty( string xs)
+    {
+        return new HtmlString(string.IsNullOrEmpty(xs) ? "-" : xs);
+    }
+
+
+}

@@ -1,0 +1,119 @@
+﻿@model Glen.MVC.Models.LoginViewModel
+@{
+    Layout = "~/Views/Layouts/_htmlBody.cshtml";
+}
+
+
+<link href="~/Content/App/login.css" rel="stylesheet"/>
+
+<div class="container">
+
+
+    <div class="panel panel-default" id="loginPanel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Employee log in
+            </h3>
+        </div>
+        <div class="panel-body">
+
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <form id="mainForm" method="post" class="form-horizontal"
+                  data-bv-message="This value is not valid"
+                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove">
+
+
+
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <input class="form-control" name="Email" type="email" placeholder="Email address" value="@Model.Email"
+                               data-bv-notempty="true"
+                               data-bv-emailaddress="true"/>
+                    </div>
+
+                    <div class="form-group logIn">
+                        <input class="form-control" name="Password" placeholder="Password" type="password"
+                               data-bv-notempty="true"
+                               pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                               data-bv-regexp-message="At least 8 characters, including a lowercase and uppercase character and 1 number"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-default btn-lg logIn" type="submit">
+                            <span class="glyphicon glyphicon-log-in margin-right-5"></span> sign in
+                        </button>
+                        <div class="btn-group" data-toggle="buttons" id="blaa">
+
+                            @if (Model.KeepMeLoggedIn)
+                            {
+                                <label class="btn btn-default btn-lg active">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    <input type="checkbox" value="true" name="KeepMeLoggedIn" checked/> remember me
+                                </label>
+                            }
+                            else
+                            {
+                                <label class="btn btn-default btn-lg logIn">
+                                    <i class="glyphicon glyphicon-unchecked"></i>
+                                    <input type="checkbox" name="KeepMeLoggedIn" value="true"> remember me
+                                </label>
+                            }
+                        </div>
+                        <button class="btn btn-default btn-lg" onclick="ForgotPassword()">
+                            <span class="fa fa-question margin-right-5"></span> I forgot the password
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+                <input name="PasswordReminder" type="hidden"/>
+            </form>
+
+
+
+        </div>
+    </div>
+    <img src="~/Content/logo.svg" style="width: 600px;" />
+
+</div>
+
+
+
+@section scripts {
+    <script>
+        function ForgotPassword() {
+            var mainForm = $('#mainForm');
+            $(".logIn").hide();
+            
+            if (mainForm.data('bootstrapValidator').isValid()) {
+                mainForm[0].elements["PasswordReminder"].value = true;
+                mainForm[0].submit();
+            }
+        }
+
+        $(document).ready(function() {
+
+
+            $('#blaa input').change(function() {
+                var chkbox = $(this);
+                chkbox.prev().toggleClass("glyphicon-ok");
+                chkbox.prev().toggleClass("glyphicon-unchecked");
+            });
+
+            $('#mainForm').bootstrapValidator();;
+
+
+        });
+    </script>
+}

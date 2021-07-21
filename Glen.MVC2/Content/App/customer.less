@@ -1,0 +1,127 @@
+﻿/*.customer-installation-rows{
+    display:flex;
+    flex: 0 1 auto;
+    flex-direction:column;
+    .irow{
+        display:flex;
+        flex: 0 1 auto;
+        flex-direction:row;
+        border:solid 1px red;
+    //    width:100%;
+        div{
+            display:flex;
+            flex: 0 1 auto;
+  //          display:table-cell;
+        }
+    }
+}*/
+.payments {
+    .well {
+        white-space: nowrap;
+        line-height: 37px;
+        margin-right: 2px;
+    }
+}
+
+.customer-installation-rows {
+    .irow {
+        border-bottom: 1px dotted #d1d1d1;
+    }
+
+    .irow:first-child, .irow:last-child {
+        font-weight: bold;
+    }
+}
+
+@media (min-width: 991px) {
+
+    .customer-installation-rows {
+        display: table;
+        border-collapse: collapse;
+        width: 100%;
+
+        .nu-row {
+            border-bottom: none !important;
+        }
+
+        .irow {
+            padding: 1px;
+            display: table-row;
+            border-bottom: 1px dotted #d1d1d1;
+            width: 100%;
+
+            div {
+                display: table-cell;
+                padding: 3px;
+
+                small {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+
+
+    .customer-installation-rows {
+        width: 100%;
+
+        .irow:first-child {
+            display: none;
+        }
+
+        .nu-row {
+            display: flex;
+
+            div {
+                display: flex;
+            }
+
+            div:nth-child(1) {
+                width: 50%;
+                padding: 0 20px;
+            }
+
+            div:nth-child(2) {
+                width: 30%;
+            }
+
+            div:nth-child(3) {
+                width: 20%;
+            }
+        }
+
+        .irow {
+            padding: 1px;
+            width: 100%;
+
+            div {
+                //                border:dotted blue 1px;
+                width: 49%;
+                padding: 3px;
+                //              height:35px;
+                line-height: 22px;
+                vertical-align: middle;
+                display: inline-block;
+                position: relative;
+
+                &.title {
+                    width: 100%;
+                    font-weight:bold;
+                }
+
+                &.desc {
+                    padding-left: 70px;
+                }
+
+                small {
+                    position: absolute;
+                    left: 0;
+                    color: #b8babd;
+                }
+            }
+        }
+    }
+}

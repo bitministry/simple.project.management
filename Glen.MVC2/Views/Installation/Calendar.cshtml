@@ -1,0 +1,36 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "EditInquiry";
+    Layout = "~/Views/Layouts/leftMenu/Order.cshtml";
+
+}
+    <div id='bookingCalendar'></div>
+
+<script>
+
+
+   
+
+
+    $(document).ready(function () {
+        var bookingCalendar = $("#bookingCalendar");
+        $.getJSON("../EventsForCalendar", function (data) {
+            bookingCalendar.fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                selectable: false,
+                selectHelper: true,
+                editable: false,
+                events: data
+            });
+        });
+
+
+    });
+
+</script>
+

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Installation>
+
+@{
+    Layout = "~/Views/Layouts/LeftMenu/Inquiry.cshtml";
+}
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Inquiries
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Inquiry
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Customer
+                    </th>
+                    <th>
+                        Address 
+                    </th>
+                    <th>
+                        Blind Type
+                    </th>
+                    <th>
+                        Size
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model)
+                {
+                    <tr>
+                        <td>
+                            @($"{project.InquiryDate:yyyy-MM-dd}")
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Installation", new { Id= project.Id } )">@project.Title</a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Customer", new {project.Customer.Id})" style="color: black;">
+                                @project.Customer.Name 
+                            </a>
+                        </td>
+                        <td>
+                            @(project.Customer.Address?.Line)
+                        </td>
+                        <td>@project.BlindType</td>
+                        <td>@project.Size()</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

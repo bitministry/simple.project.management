@@ -1,0 +1,143 @@
+﻿
+@using System.Web.Configuration
+@model object[]
+
+@{
+    var projects = Model[0] as IEnumerable<Installation>;
+    var customers = Model[1] as IEnumerable<Customer>;
+
+    Layout = "~/Views/Layouts/LeftMenu/Empty.cshtml";
+}
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Projects containing "@(ViewContext.RouteData.Values["id"])"
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Blind Type
+                </th>
+                <th>
+                    Size
+                </th>
+                <th>
+                    Material
+                </th>
+                <th>
+                    Side
+                </th>
+                <th>
+                    Price
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var project in projects ?? new Installation[0])
+            {
+                <tr>
+
+                    <td>
+                        <a href="@Url.Action("Edit", "Installation", new {Id = project.Id})">@project.Title</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Customer", new {project.Customer.Id})" style="color: black;">
+                            @project.Customer.Name (@(project.Customer.Address?.City()))
+                        </a>
+                    </td>
+                    <td>@project.BlindType</td>
+                    <td>@project.Size()</td>
+                    <td>@project.Material</td>
+                    <td>@project.Side</td>
+                    <td nowrap="">@(project.Price.HasValue ? project.Price.Value.ToString("C") : "")</td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Customers containing "@(ViewContext.RouteData.Values["id"])"
+        </h3>
+    </div>
+    <div class="panel-body">
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Phone
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var customer in customers ?? new Customer[0])
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Edit", "Customer", new { customer.Id } )">@customer.Name</a>
+                        </td>
+                        <td>
+                            @customer.Address.Line
+                        </td>
+                        <td>
+                            @customer.Email
+                        </td>
+                        <td>
+                            @customer.Phone
+                        </td>
+                        <td>
+
+                            <a class="btn btn-default btn-sm" href="@Url.Action("Edit", "Customer", new { Id= customer.Id } )">
+                                <span class="glyphicon glyphicon-edit"
+                                      data-toggle="tooltip" data-placement="left" title="Edit that customer"></span>
+                            </a>
+
+
+                            <a class="btn btn-default btn-sm" href="@Url.Action("Create", "Installation", new {Id = customer.Id})">
+                                <span class="glyphicon glyphicon-plus"
+                                      data-toggle="tooltip" data-placement="top" title="New project for that customer"></span>
+                            </a>
+
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

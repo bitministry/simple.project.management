@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Installation>
+
+@{
+    Layout = "~/Views/Layouts/LeftMenu/Empty.cshtml";
+    
+    
+}
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Proposals
+        </h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Proposal
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Customer
+                    </th>
+                    <th>
+                        Blind Type
+                    </th>
+                    <th>
+                        Size
+                    </th>
+                    <th>
+                        Material
+                    </th>
+                    <th>
+                        Side
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model)
+                 {
+                     <tr>
+                         <td>
+                             @($"{project.ProposalDate:yyyy-MM-dd}")
+                         </td>
+                         <td>
+                             <a href="@Url.Action("Edit", "Installation", new {project.Id } )">@project.Title</a>
+                         </td>
+                         <td>
+                             <a href="@Url.Action("Edit", "Customer", new {project.Customer.Id})" style="color: black;">
+                                 @project.Customer.Name (@(project.Customer.Address?.City()))
+                             </a>
+                         </td>
+                         <td>@project.BlindType</td>
+                         <td>@project.Size()</td>
+                         <td>@project.Material</td>
+                         <td>@project.Side</td>
+                         <td nowrap="">@(project.Price.HasValue ? project.Price.Value.ToString("C") : "")</td>
+
+ 
+                     </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

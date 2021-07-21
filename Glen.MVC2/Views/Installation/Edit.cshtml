@@ -1,0 +1,191 @@
+﻿@model  Installation
+
+@{
+    ViewBag.Title = "EditInquiry";
+
+    var leftMenu = (Model.Status == Installation.StatusEnum.Inquiry || Model.Status == Installation.StatusEnum.Order ) ? Model.Status.ToString() : "Empty";
+    
+    Layout = $"~/Views/Layouts/leftMenu/{leftMenu}.cshtml";
+}
+
+
+@if (ViewBag.Exception != null)
+{
+    @Html.Partial("Exception", (Exception)ViewBag.Exception)
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            @Model.Status -
+            <a href="@Url.Action("Edit", "Customer", new {Model.Customer.Id})">
+                @Model.Customer.Name
+            </a> -
+            @Model.Title
+            <span class="pull-right">
+                @Model.Customer.Address.formatted_address
+            </span>
+        </h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body" >
+        <div id="projectBody">
+            <form id="mainForm" method="post" class="form-horizontal" 
+                  action="@Url.Action("Edit")"
+                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+                <button type="submit" class="hidden" id="mainFormSubmit"></button>
+
+                <input type="hidden" name="Id" value="@Model.Id">
+                <input type="hidden" name="Customer.Id" value="@Model.Customer.Id">
+                <input type="hidden" name="Status" value="@Model.Status">
+                <div class="col-md-6">
+                    
+
+                    @if (Model.InquiryDate != null)
+                    {
+                        @Html.Partial("_editInquiry", Model)
+
+                    }
+                 
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-xs-4 control-label">Title</div>
+                        <div class="col-xs-8">
+                            <input class="form-control" name="Title" placeholder="Title" value="@Model.Title" @ViewBag.readOnly
+                                   style="font-weight: bold;"
+                                   data-bv-stringlength-message="Has to be longer then 1 letter"
+                                   data-bv-stringlength-min="2"
+                                   data-bv-notempty="true"
+                                   data-bv-notempty-message="The title is required and cannot be empty"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-4 control-label">Customer</div>
+                        <div class="col-xs-8">
+                            <h4>
+                                <a href="@Url.Action("Edit", "Customer", new {Model.Customer.Id})">
+                                    @Model.Customer.Name
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+
+
+                    @if (Model.Status > Installation.StatusEnum.Inquiry)
+                    {
+                        @Html.Partial("_editProposal", Model)
+                    }
+
+                    @if (Model.Status > Installation.StatusEnum.Proposal)
+                    {
+                        @Html.Partial("_editOrder", Model)
+                    }
+
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 ">
+            <div style="text-align: center;">
+                @if (Model.Status == Installation.StatusEnum.Proposal && LoginRole.Is( PositionEnum.Sales )) 
+                {
+                    <button class="btn btn-primary" onclick="Modal('BookDates()')">
+                        <span class="glyphicon glyphicon-calendar margin-right-5"></span> book dates
+                    </button>
+                }
+                @if (Model.Status >= Installation.StatusEnum.Order && Model.Status < Installation.StatusEnum.Archived)
+                {
+                    <a class="btn btn-success" href="@Url.Action("ForwardToNextStatus", "Installation", new {Model.Id})">
+                        <span class="fa fa-mail-forward margin-right-5"></span> forward
+                    </a>
+
+                }
+                @if ( LoginRole.Is(PositionEnum.Sales, PositionEnum.ProjectManager ))
+                {
+                    <button class="btn btn-primary" type="button" onclick=" $('#mainFormSubmit').click() ">
+                        <span class="glyphicon glyphicon-ok margin-right-5"></span> Save
+                    </button>
+                    <a class="btn btn-warning" href="@Url.Action("Delete", "Installation", new {Id = Model.Id})">
+                        <span class="glyphicon glyphicon-remove margin-right-5"></span> Delete
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " role="dialog" id="projectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-heading" >
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="zzzz">
+                <div id="content"></div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+@section scripts{
+    <script>
+
+        $(function() {
+
+            $(".date").datepicker({
+                dateFormat: "yy-mm-dd",
+                showAnim: "slideDown"
+            });
+            
+            $('#mainForm').bootstrapValidator();
+
+        });
+
+        function Modal(delegate) {
+
+            $("#projectModal").modal('show');
+            window.setTimeout(delegate, 100);
+
+        }
+
+
+        function BookDates() {
+
+            $("#projectModal .modal-title").html("Select the project period");
+            
+            var bookingCalendar = $('#content');
+
+            if (bookingCalendar.html().length == 0)
+                $.getJSON("../EventsForCalendar", function(data) {
+                    bookingCalendar.fullCalendar({
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: ''
+                        },
+                        selectable: true,
+                        select: function(start, end, allDay) {
+                            $("#startDate").val(MyDate(start));
+                            $("#endDate").val(MyDate(end));
+                            $("#projectModal").modal('hide');
+                        },
+                        selectHelper: true,
+                        editable: true,
+                        events: data
+                    });
+                });
+            bookingCalendar.fullCalendar('render');
+        }
+
+    </script>
+}

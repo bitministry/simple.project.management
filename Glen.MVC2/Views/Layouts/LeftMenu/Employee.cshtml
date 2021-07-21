@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Views/Layouts/_default.cshtml"; 
+    ViewBag.action = Request.RequestContext.RouteData.Values["Action"]; 
+}
+
+<div class="row clearfix">
+    <div class="col-md-2">
+        <div class="list-group">
+@if (LoginRole.Is())
+{
+    <a href="@Url.Action("Index", "Employee")" class="list-group-item  @Html.Raw( ViewBag.action =="Index" ? "active" : "" )">
+        <span class="glyphicon glyphicon-list margin-right-5"></span>
+        List
+    </a>
+
+    <a href="@Url.Action("Edit", "Employee", new {Id = "create_new"})" class="list-group-item ">
+        <span class="glyphicon glyphicon-plus margin-right-5"></span>
+        New employee
+    </a>
+
+}
+        </div>
+
+
+        <p class="text-info" style="padding: 5px;">
+            Everything related to employees
+        </p>
+        
+
+    </div>
+    <div class="col-md-10">
+        @RenderBody()
+    </div>
+</div>
+@RenderSection("scripts", required: false)
+@RenderSection("css", required: false)

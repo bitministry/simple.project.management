@@ -1,0 +1,29 @@
+﻿@using Glen.MVC.Models
+@model Customer
+@{
+    Layout = null;
+}
+
+<form method="post" class="form-horizontal" enctype="multipart/form-data"
+      data-bv-message="This value is not valid"
+      data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+      data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+      data-bv-feedbackicons-validating="glyphicon glyphicon-refresh" action="@Url.Action("Create", "Installation")">
+
+    <input type="hidden" name="Customer.Id" value="@Model.Id">
+
+    <div class="col-md-6">
+        <div class="form-group ">
+            <input class="form-control" name="Title" placeholder="Title" id="newInstallationTitle"
+                   data-bv-stringlength-message="Has to be longer then 1 letter"
+                   data-bv-stringlength-min="2"
+                   data-bv-notempty="true"
+                   data-bv-notempty-message="The title is required and cannot be empty"/>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary center-block" type="submit">
+            <span class="glyphicon glyphicon-ok margin-right-5"></span> Create
+        </button>
+    </div>
+</form>
